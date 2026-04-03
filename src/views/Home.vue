@@ -6,7 +6,7 @@
       class="absolute top-4 right-4 sm:top-6 sm:right-6 cartoon-btn-accent px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-lg font-bold flex items-center gap-1 sm:gap-2 whitespace-nowrap"
     >
       <span>📚</span>
-      <span class="hidden sm:inline">历史考试</span>
+      <span class="hidden sm:inline">历史记录</span>
       <span class="sm:hidden">历史</span>
     </button>
 
