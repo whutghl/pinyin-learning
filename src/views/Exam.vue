@@ -21,6 +21,27 @@
     <!-- 题目卡片 -->
     <div v-if="currentQuestion" class="max-w-2xl mx-auto">
       <div class="cartoon-card text-center">
+        <!-- 自动跳转开关 -->
+        <div class="flex justify-end items-center mb-4">
+          <label class="flex items-center gap-2 cursor-pointer select-none">
+            <span class="text-sm text-textLight">答完自动下一题</span>
+            <div 
+              @click="autoJump = !autoJump"
+              :class="[
+                'w-12 h-6 rounded-full transition-colors duration-200 relative',
+                autoJump ? 'bg-primary' : 'bg-gray-300'
+              ]"
+            >
+              <div 
+                :class="[
+                  'w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform duration-200 shadow-md',
+                  autoJump ? 'translate-x-6' : 'translate-x-0.5'
+                ]"
+              ></div>
+            </div>
+          </label>
+        </div>
+
         <!-- 汉字显示 -->
         <div class="mb-8">
           <p class="text-textLight text-lg mb-4">请选择正确的拼音：</p>
@@ -137,6 +158,7 @@ const examStore = useExamStore()
 
 // 状态
 const selectedOption = ref<string>('')
+const autoJump = ref<boolean>(true) // 是否自动跳转下一题
 
 // 计算属性
 const currentQuestion = computed(() => examStore.currentQuestion)
@@ -192,14 +214,16 @@ function handleAnswer(option: string) {
 
   selectedOption.value = option
 
-  // 自动跳转到下一题（延迟 500ms 让用户看到选择结果）
-  setTimeout(() => {
-    if (currentQuestionIndex.value < totalQuestions.value - 1) {
-      // 不是最后一题，自动跳转
-      handleNextQuestion()
-    }
-    // 最后一题不自动跳转，让用户点击"完成游戏"
-  }, 500)
+  // 如果开启了自动跳转，延迟 500ms 后自动跳转到下一题
+  if (autoJump.value) {
+    setTimeout(() => {
+      if (currentQuestionIndex.value < totalQuestions.value - 1) {
+        // 不是最后一题，自动跳转
+        handleNextQuestion()
+      }
+      // 最后一题不自动跳转，让用户点击"完成游戏"
+    }, 500)
+  }
 }
 
 // 上一题
